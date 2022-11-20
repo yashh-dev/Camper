@@ -6,7 +6,9 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const {campSchema} = require('./schemas')
+const {campSchema,reviewSchema} = require('./schemas')
+const Review = require('./models/review');
+const review = require('./models/review');
 mongoose.connect('mongodb://localhost:27017/camper')
 
 const db = mongoose.connection;
@@ -24,6 +26,16 @@ app.engine('ejs',ejsMate)
 
 const validateCampground=(req,res,next)=>{
 	const {error }= campSchema.validate(req.body);
+	if(error){
+		const msg = error.details.map(el => el.message).join(',')
+		throw new ExpressError(msg,500)
+	}else{
+		next()
+	}
+}
+
+const validateReview= (req,res,next) =>{
+	const {error}= reviewSchema.validate(req.body);
 	if(error){
 		const msg = error.details.map(el => el.message).join(',')
 		throw new ExpressError(msg,500)
@@ -57,7 +69,7 @@ app.post('/campgrounds',validateCampground,catchAsync(async(req,res,next)=>{
 
 app.get('/campgrounds/:id', catchAsync(async (req,res)=>{
 	const {id} = req.params;
-	const camp = await Campground.findById(id);
+	const camp = await Campground.findById(id).populate('reviews');
 	res.render('campgrounds/show',{camp})
 }))
 
@@ -79,6 +91,22 @@ app.delete('/campgrounds/:id', catchAsync( async (req,res) => {
 	await Campground.findByIdAndDelete(id)
 	res.redirect('/campgrounds')
 }))
+
+app.delete('/campgrounds/:id/reviews/:reviewId',catchAsync(async(req,res)=>{
+	const {id , reviewId} = req.params;
+	await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
+	await Review.findByIdAndDelete(reviewId);
+	res.redirect(`/campgrounds/${id}`)
+}))
+app.post('/campgrounds/:id/reviews',validateReview,async(req,res)=>{
+
+	const camp = await Campground.findById(req.params.id);
+	const review = new Review(req.body.review);
+	camp.reviews.push(review);
+	await review.save();
+	await camp.save();
+	res.redirect(`/campgrounds/${camp._id}`)
+})
 
 app.get('*',(req,res,next)=>{
 	next(new ExpressError('Page not found',404))
