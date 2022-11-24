@@ -9,6 +9,8 @@ const campRouter = require('./routes/campgrounds')
 const reviewRouter = require('./routes/reviews')
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const User = require('./models/user')
+const authRouter = require('./routes/users')
 
 mongoose.connect('mongodb://localhost:27017/camper')
 
@@ -27,10 +29,11 @@ app.set('views',path.join(__dirname,'views'))
 app.engine('ejs',ejsMate)
 app.use(express.static(path.join(__dirname,'public')))
 
+
 const sessionConfig = {
 	secret : 'crash',
 	resave : false,
-	saveUninitialized : true,
+	saveUninitialized : false,
 	cookie : {
 		httpOnly : true,
 		expires : Date.now() + (1000 * 60 * 60 * 24 * 7),
@@ -39,14 +42,26 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig));
+
+app.use(passport.initialize());
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 app.use(flash())
+
 app.use((req,res,next)=>{
+	res.locals.returnTo = req.session.returnTo;
 	res.locals.success = req.flash('success');
-	res.locals.error = req.flash('error')
+	res.locals.error = req.flash('error');
+	res.locals.user = req.user;
 	next()
 })
+
+app.use('/',authRouter)
 app.use('/campgrounds',campRouter)
 app.use('/campgrounds/:id/reviews',reviewRouter)
+
 
 
 
