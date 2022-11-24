@@ -7,6 +7,9 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate')
 const campRouter = require('./routes/campgrounds')
 const reviewRouter = require('./routes/reviews')
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
 mongoose.connect('mongodb://localhost:27017/camper')
 
 const db = mongoose.connection;
