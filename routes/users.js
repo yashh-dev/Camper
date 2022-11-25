@@ -33,7 +33,6 @@ router.get('/login',(req,res)=>{
 
 router.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),function (req, res) {
     const {red} = req.query
-    console.log(red);
     res.redirect(red);
   })
 
