@@ -20,7 +20,8 @@ const seedDb=async()=>{
             location:`${cities[rand].city}, ${cities[rand].state}`,
             image:'https://source.unsplash.com/collection/483251',
             description: " est sequi laboriosam. Quis quas quod ea! Temporibus quis maxime libero cupiditate odit iure aliquid impedit, deserunt excepturi omnis ullam cumque laborum doloremque harum expedita quasi eum enim reiciendis eaque, tempore repudiandae. Debitis eum ",
-            price: rand+10
+            price: rand+10,
+            author:'637f28efeb7ea9f8fa808da9'
         }
             )
         await camps.save()

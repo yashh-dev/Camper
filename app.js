@@ -11,6 +11,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user')
 const authRouter = require('./routes/users')
+const ExpressError = require('./utils/ExpressError')
 
 mongoose.connect('mongodb://localhost:27017/camper')
 
@@ -76,6 +77,7 @@ app.get('/',(req,res)=>{
 app.get('*',(req,res,next)=>{
 	next(new ExpressError('Page not found',404))
 })
+
 
 app.use((err,req,res,next)=>{
 	const { message ='we are having a internal problem' ,status = 500} = err;
