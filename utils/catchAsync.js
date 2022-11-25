@@ -1,5 +1,5 @@
-module.exports = function catchAsync(fun){
+module.exports = function catchAsync(func){
     return (req,res,next)=>{
-        fun(req,res,next).catch(next);
+        func(req,res,next).catch(next);
     }
 }
