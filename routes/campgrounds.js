@@ -3,11 +3,16 @@ const router  = express.Router()
 const catchAsync = require('../utils/catchAsync');
 const campsController = require('../controllers/campgrounds')
 const {isLoggedIn,validateCampground,isAuthor} = require('../middleware');
-
+const multer = require('multer');
+const upload = multer({dest : 'uploads/'})
 
 router.route('/')
 	.get(catchAsync(campsController.index))
-	.post(isLoggedIn,validateCampground,catchAsync(campsController.createCamp))
+	// .post(isLoggedIn,validateCampground,catchAsync(campsController.createCamp))
+	.post(upload.array('image'),(req,res)=>{
+		res.send(req.body);
+		console.log(req.files);
+	})
 
 router.get('/new',isLoggedIn,campsController.renderNewForm)
 

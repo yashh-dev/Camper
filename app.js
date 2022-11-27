@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !== "production"){
+	require('dotenv').config()
+}
+console.log(process.env.CLOUDINARY_CLOUD_NAME);
+
 const express = require('express');
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -21,7 +26,6 @@ db.once("open",()=>console.log("Database Connected"))
 const app = express();
 
 const port = 3000;
-
 
 app.use(express.urlencoded({extended:true}))
 app.use(methodOverride('_method'))
@@ -64,14 +68,10 @@ app.use('/campgrounds',campRouter)
 app.use('/campgrounds/:id/reviews',reviewRouter)
 
 
-
-
-
 app.get('/',(req,res)=>{
 	res.render('home')
 }
 )
-
 
 
 app.get('*',(req,res,next)=>{
