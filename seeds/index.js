@@ -18,7 +18,10 @@ const seedDb=async()=>{
         const camps=new Campground({
             title:`${sample(descriptors)} ${sample(places)}`,
             location:`${cities[rand].city}, ${cities[rand].state}`,
-            image:'https://source.unsplash.com/collection/483251',
+            image:[{
+                url : 'https://source.unsplash.com/collection/483251',
+                filename: ''
+            }],
             description: " est sequi laboriosam. Quis quas quod ea! Temporibus quis maxime libero cupiditate odit iure aliquid impedit, deserunt excepturi omnis ullam cumque laborum doloremque harum expedita quasi eum enim reiciendis eaque, tempore repudiandae. Debitis eum ",
             price: rand+10,
             author:'637f28efeb7ea9f8fa808da9'

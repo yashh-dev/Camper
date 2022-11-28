@@ -1,7 +1,6 @@
 if(process.env.NODE_ENV !== "production"){
 	require('dotenv').config()
 }
-console.log(process.env.CLOUDINARY_CLOUD_NAME);
 
 const express = require('express');
 const session = require('express-session')

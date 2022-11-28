@@ -10,12 +10,13 @@ module.exports.renderNewForm = (req,res)=>{
 }
 
 module.exports.createCamp=async(req,res,next)=>{
-    const campground = new Campground(req.body.campground);	
+	const campground = new Campground(req.body.campground);	
+	campground.image = req.files.map(f => ({url : f.path, filename : f.filename}))
     campground.author = req.user._id;
     await campground.save()
+	console.log(campground);
     req.flash('success','New CampGround Created')
     res.redirect(`/campgrounds/${campground._id}`)
-
 }
 
 module.exports.showCampground = async (req,res)=>{
@@ -57,4 +58,4 @@ module.exports.deleteCamp = async (req,res) => {
 	await Campground.findByIdAndDelete(id)
     req.flash('success','Successfully deleted the Campground')
 	res.redirect('/campgrounds')
-}
+}	
