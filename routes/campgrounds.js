@@ -9,13 +9,13 @@ const upload = multer({storage})
 
 router.route('/')
 	.get(catchAsync(campsController.index))
-	.post(isLoggedIn,upload.array('image'),validateCampground	,catchAsync(campsController.createCamp))
+	.post(isLoggedIn,upload.array('image'),validateCampground,catchAsync(campsController.createCamp))
 
 router.get('/new',isLoggedIn,campsController.renderNewForm)
 
 router.route('/:id')
 	.get(catchAsync(campsController.showCampground))
-	.put(isLoggedIn,isAuthor,validateCampground,catchAsync(campsController.updateCamp))
+	.put(isLoggedIn,isAuthor,upload.array('image'),validateCampground,catchAsync(campsController.updateCamp))
 	.delete(isLoggedIn, isAuthor,catchAsync( campsController.deleteCamp ))
 
 router.get('/:id/edit',isLoggedIn,isAuthor,catchAsync(campsController.renderEditForm))

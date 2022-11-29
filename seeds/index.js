@@ -11,7 +11,7 @@ db.once("open",()=>console.log("Database Connected"))
 
 const sample = (array) => array[Math.floor(Math.random()*array.length)]
 
-const seedDb=async()=>{
+    const seedDb=async()=>{
     await Campground.deleteMany({});
     for (let i = 0; i < 50 ;i++) {
         const rand = Math.floor(Math.random()*1000)+1;
@@ -19,7 +19,7 @@ const seedDb=async()=>{
             title:`${sample(descriptors)} ${sample(places)}`,
             location:`${cities[rand].city}, ${cities[rand].state}`,
             image:[{
-                url : 'https://source.unsplash.com/collection/483251',
+                url : 'https://res.cloudinary.com/dkxao025l/image/upload/v1669563100/Camper/oxivlsxu3lwsy34i2cf7.jpg',
                 filename: ''
             }],
             description: " est sequi laboriosam. Quis quas quod ea! Temporibus quis maxime libero cupiditate odit iure aliquid impedit, deserunt excepturi omnis ullam cumque laborum doloremque harum expedita quasi eum enim reiciendis eaque, tempore repudiandae. Debitis eum ",
