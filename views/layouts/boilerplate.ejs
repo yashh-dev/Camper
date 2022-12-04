@@ -21,27 +21,7 @@
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
         crossorigin="anonymous"></script>
     <%- include('../partials/footer') %> 
-    <script >
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (() => {
-        'use strict'
-        bsCustomFileInput.init()
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.validate-form')
-      
-        // Loop over them and prevent submission
-        Array.from(forms).forEach(form => {
-          form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-            }
-      
-            form.classList.add('was-validated')
-          }, false)
-        })
-      })()
-    </script>
+    <script src="/js/validateForms.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 </body>
 </html>
