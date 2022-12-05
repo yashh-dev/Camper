@@ -16,7 +16,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user')
 const authRouter = require('./routes/users')
 const ExpressError = require('./utils/ExpressError')
-
+const mongoSanitize = require('express-mongo-sanitize');
 mongoose.connect('mongodb://localhost:27017/camper')
 
 const db = mongoose.connection;
@@ -32,7 +32,7 @@ app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'))
 app.engine('ejs',ejsMate)
 app.use(express.static(path.join(__dirname,'public')))
-
+app.use(mongoSanitize());
 
 const sessionConfig = {
 	secret : 'crash',

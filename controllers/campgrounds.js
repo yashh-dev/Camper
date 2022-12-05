@@ -2,6 +2,7 @@ const { cloudinary } = require('../cloudinary');
 const Campground = require('../models/campground')
 
 module.exports.index = async (req,res) => {
+	console.log(req.query);
 	const camps = await Campground.find({});
 	res.render('campgrounds/index',{camps})
 }
