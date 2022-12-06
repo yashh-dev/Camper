@@ -35,7 +35,8 @@ app.use(express.static(path.join(__dirname,'public')))
 app.use(mongoSanitize());
 
 const sessionConfig = {
-	secret : 'crash',
+	name : 'repmac',
+	secret : process.env.SESSION_SECRET,
 	resave : false,
 	saveUninitialized : false,
 	cookie : {
