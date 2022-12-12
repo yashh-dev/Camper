@@ -17,11 +17,18 @@ const User = require('./models/user')
 const authRouter = require('./routes/users')
 const ExpressError = require('./utils/ExpressError')
 const mongoSanitize = require('express-mongo-sanitize');
-mongoose.connect('mongodb://localhost:27017/camper')
+const helmet = require('helmet')
+const db_url = process.env.DB_URL || "mongodb://localhost:27017/camper";
+const secret = process.env.SESSION_SECRET || 'secret';
+const MongoStore = require('connect-mongo');
+
+mongoose.connect(db_url).catch(e=>{
+	console.log("DB ERROR");
+	console.log(e);
+})
 
 const db = mongoose.connection;
-db.on("error",err=> console.error.bind(console,"Connection Error"))
-db.once("open",()=>console.log("Database Connected"))
+
 const app = express();
 
 const port = 3000;
@@ -33,10 +40,54 @@ app.set('views',path.join(__dirname,'views'))
 app.engine('ejs',ejsMate)
 app.use(express.static(path.join(__dirname,'public')))
 app.use(mongoSanitize());
+app.use(helmet())
+const scriptSrcUrls = [
+	"https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js",
+	"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js",
+    "https://stackpath.bootstrapcdn.com",
+    "https://kit.fontawesome.com",
+    "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+	"https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css",
+    "https://kit-free.fontawesome.com",
+    "https://stackpath.bootstrapcdn.com",
+    "https://fonts.googleapis.com",
+    "https://use.fontawesome.com",
+];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'"],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            childSrc: ["blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+				"https://res.cloudinary.com/dkxao025l/image/",
+                // "https://res.cloudinary.com/dkxao025l/",
+                "https://images.unsplash.com",
+            ],
+            fontSrc: ["'self'"],
+        },
+    })
+);
+
 
 const sessionConfig = {
+	store : MongoStore.create({
+		mongoUrl : db_url,
+		secret : secret,
+		touchAfter : 24*60*60
+	}),
 	name : 'repmac',
-	secret : process.env.SESSION_SECRET,
+	secret : secret,
 	resave : false,
 	saveUninitialized : false,
 	cookie : {
