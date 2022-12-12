@@ -18,7 +18,7 @@ const authRouter = require('./routes/users')
 const ExpressError = require('./utils/ExpressError')
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
-const db_url = "mongodb+srv://yashwanth:burn@cluster0.kj9y4ix.mongodb.net/?retryWrites=true&w=majority"
+const db_url = process.env.DB_URL
 //  process.env.DB_URL || "mongodb://localhost:27017/camper";
 const secret = process.env.SESSION_SECRET || 'secret';
 const MongoStore = require('connect-mongo');
