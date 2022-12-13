@@ -1,9 +1,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div>
-    <h1 align="center">Camper</h1>
+    <h1 >Camper</h1>
 
-  <p align="center">
+  <p>
     Camper is yelp for Campgrounds
   </p>
 </div>
