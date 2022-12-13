@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <br />
-<div align="center">
+<div>
     <h1 align="center">Camper</h1>
 
   <p align="center">
@@ -13,7 +13,6 @@
 ## About The Project
 
 <img src="/Screenshot_2022-12-13_08-43-47.png" style="height:300px">
-[![Product Name Screen Shot][product-screenshot]](https://camper.onrender.com/)
 
 The project has the basic CRUD operation to upload campgrounds and provide review with ratings for camps.
 
