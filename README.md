@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <h3 align="center">Camper</h3>
+    <h1 align="center">Camper</h1>
 
   <p align="center">
     Camper is yelp for Campgrounds
