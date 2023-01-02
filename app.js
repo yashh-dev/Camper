@@ -23,10 +23,15 @@ const db_url = process.env.DB_URL
 const secret = process.env.SESSION_SECRET || 'secret';
 const MongoStore = require('connect-mongo');
 
-mongoose.connect(db_url).catch(e=>{
-	console.log("DB ERROR");
-	console.log(e);
-})
+mongoose
+	.connect(db_url)
+	.then(() => {
+		console.log("DB connected");
+	})
+	.catch((e) => {
+		console.log("DB ERROR");
+		console.log(e);
+	});
 
 const db = mongoose.connection;
 
